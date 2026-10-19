@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>8-Puzzle Solver | Intelligent Puzzle Solver</title>
+
+    <link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#home" class="logo">Puzzle<span>AI</span></a>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#solver">Solver</a>
+            <a href="#how-it-works">How It Works</a>
+        </nav>
+
+        <a href="#solver" class="nav-button">Try Solver ↗</a>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <p class="tagline">ARTIFICIAL INTELLIGENCE PROJECT</p>
+
+            <h1>
+                Make Every Move<br>
+                <span>Intelligent.</span>
+            </h1>
+
+            <p class="description">
+                Explore the power of AI through the classic 8-puzzle.
+                Create your puzzle, discover intelligent search,
+                and watch the solution unfold.
+            </p>
+
+            <a href="#solver" class="primary-button">
+                Explore the Solver →
+            </a>
+        </section>
+
+        <section id="about" class="placeholder-section">
+            <h2>About the Project</h2>
+            <p>
+                The 8-puzzle is a state-space search problem. Move one adjacent
+                tile into the blank space to reach the goal arrangement.
+            </p>
+        </section>
+
+        <section id="solver" class="solver-section">
+            <p class="tagline">02 — INTERACTIVE PUZZLE</p>
+
+            <h2>Challenge the <span>AI.</span></h2>
+
+            <p class="solver-description">
+                Play the puzzle yourself or inspect an optimal A* solution.
+            </p>
+
+            <div class="puzzle-workspace">
+                <article class="puzzle-card" data-puzzle="main">
+                    <h3>Main Puzzle</h3>
+                    <p class="puzzle-help">Click a tile next to the blank to move it.</p>
+                    <div class="puzzle-board" data-board="main" role="grid" aria-label="Main 8-puzzle board"></div>
+                    <p class="board-status" data-status="main" role="status" aria-live="polite">INITIAL STATE // READY</p>
+
+                    <div class="solver-stats" data-dashboard="main" aria-live="polite">
+                        <p>Player moves <span data-stat="playerMoves">0</span></p>
+                        <p>Player elapsed <span data-stat="playerTime">—</span></p>
+                        <p>Current Manhattan <span data-stat="currentDistance">1</span></p>
+                        <p>Initial Manhattan <span data-stat="initialDistance">1</span></p>
+                        <p>Distance improvement <span data-stat="improvement">0</span></p>
+                        <p>Optimal solution <span data-stat="solutionMoves">—</span></p>
+                        <p>AI playback <span data-stat="playbackProgress">—</span></p>
+                        <p>AI search time <span data-stat="searchTime">—</span></p>
+                        <p>Playback elapsed <span data-stat="playbackTime">—</span></p>
+                        <p>Expanded nodes <span data-stat="expanded">—</span></p>
+                        <p>Discovered states <span data-stat="discovered">—</span></p>
+                        <p>Peak open list <span data-stat="peakOpen">—</span></p>
+                        <p>Current g(n) <span data-stat="gCost">0</span></p>
+                        <p>Current h(n) <span data-stat="hCost">1</span></p>
+                        <p>Current f(n) <span data-stat="fCost">1</span></p>
+                        <p>Solver status <span data-stat="solverStatus">Ready</span></p>
+                    </div>
+                    <p class="search-explanation">A* evaluates the current path state with f(n) = g(n) + h(n); the frontier expands a state with the lowest estimated total cost.</p>
+                    <div class="search-visualization">
+                        <p>Optimal path states / discovered states <span data-path-summary="main">—</span></p>
+                        <progress data-path-ratio="main" max="1" value="0" aria-label="Solution path states relative to discovered states"></progress>
+                    </div>
+
+                    <div class="control-row" aria-label="Main puzzle controls">
+                        <button id="reset-btn" class="primary-button" data-action="reset-main" type="button">↻ Reset Puzzle</button>
+                        <button id="random-btn" class="primary-button" data-action="random-main" type="button">⤨ Random Puzzle</button>
+                        <button id="solve-btn" class="primary-button" data-action="solve-main" type="button">✦ Solve with AI</button>
+                        <button class="secondary-button" data-action="hint-main" type="button">💡 Hint</button>
+                    </div>
+                    <p class="hint-message" data-hint="main" role="status" aria-live="polite"></p>
+                    <div class="control-row playback-controls" aria-label="Main solution playback">
+                        <button class="secondary-button icon-button" data-action="pause-main" type="button" title="Pause" aria-label="Pause" disabled>Ⅱ</button>
+                        <button class="secondary-button icon-button" data-action="resume-main" type="button" title="Resume" aria-label="Resume" disabled>▶</button>
+                        <button class="secondary-button icon-button" data-action="previous-main" type="button" title="Previous move" aria-label="Previous move" disabled>◀</button>
+                        <button class="secondary-button icon-button" data-action="next-main" type="button" title="Next move" aria-label="Next move" disabled>▶</button>
+                        <button class="secondary-button icon-button" data-action="replay-main" type="button" title="Replay solution" aria-label="Replay solution" disabled>↻</button>
+                        <button class="secondary-button icon-button" data-action="cancel-main" type="button" title="Stop / cancel" aria-label="Stop / cancel" disabled>■</button>
+                    </div>
+                </article>
+
+                <article class="custom-puzzle puzzle-card" data-puzzle="custom">
+                    <h3>Custom Puzzle Solver</h3>
+                    <p>Enter each digit from 0 to 8 once. Zero represents the blank tile.</p>
+                    <div class="custom-setup-panel">
+                    <div class="custom-input-grid">
+                        <input type="text" inputmode="numeric" maxlength="1" value="1" aria-label="Custom cell 1">
+                        <input type="text" inputmode="numeric" maxlength="1" value="2" aria-label="Custom cell 2">
+                        <input type="text" inputmode="numeric" maxlength="1" value="3" aria-label="Custom cell 3">
+                        <input type="text" inputmode="numeric" maxlength="1" value="4" aria-label="Custom cell 4">
+                        <input type="text" inputmode="numeric" maxlength="1" value="5" aria-label="Custom cell 5">
+                        <input type="text" inputmode="numeric" maxlength="1" value="6" aria-label="Custom cell 6">
+                        <input type="text" inputmode="numeric" maxlength="1" value="7" aria-label="Custom cell 7">
+                        <input type="text" inputmode="numeric" maxlength="1" value="0" aria-label="Custom cell 8">
+                        <input type="text" inputmode="numeric" maxlength="1" value="8" aria-label="Custom cell 9">
+                    </div>
+                    <div class="control-row">
+                        <button id="apply-custom-btn" class="primary-button" data-action="apply-custom" type="button">Apply Custom Puzzle</button>
+                        <button class="secondary-button" data-action="reset-custom" type="button">Reset Custom Puzzle</button>
+                        <button class="secondary-button" data-action="restart-custom" type="button">Restart Custom Attempt</button>
+                    </div>
+                    <p id="custom-message" class="validation-message" role="status" aria-live="polite"></p>
+                    </div>
+                    <div class="custom-solver-panel">
+                    <div class="puzzle-board" data-board="custom" role="grid" aria-label="Custom 8-puzzle board"></div>
+                    <p class="board-status" data-status="custom" role="status" aria-live="polite">CUSTOM STATE // READY</p>
+
+                    <div class="control-row">
+                        <button class="primary-button" data-action="solve-custom" type="button">✦ Solve Custom Puzzle with AI</button>
+                        <button class="secondary-button" data-action="hint-custom" type="button">💡 Custom Hint</button>
+                    </div>
+                    <p class="hint-message" data-hint="custom" role="status" aria-live="polite"></p>
+                    <div class="control-row playback-controls" aria-label="Custom solution playback">
+                        <button class="secondary-button icon-button" data-action="pause-custom" type="button" title="Pause" aria-label="Pause" disabled>Ⅱ</button>
+                        <button class="secondary-button icon-button" data-action="resume-custom" type="button" title="Resume" aria-label="Resume" disabled>▶</button>
+                        <button class="secondary-button icon-button" data-action="previous-custom" type="button" title="Previous move" aria-label="Previous move" disabled>◀</button>
+                        <button class="secondary-button icon-button" data-action="next-custom" type="button" title="Next move" aria-label="Next move" disabled>▶</button>
+                        <button class="secondary-button icon-button" data-action="replay-custom" type="button" title="Replay solution" aria-label="Replay solution" disabled>↻</button>
+                        <button class="secondary-button icon-button" data-action="cancel-custom" type="button" title="Stop / cancel" aria-label="Stop / cancel" disabled>■</button>
+                    </div>
+                    </div>
+                    <div class="solver-stats" data-dashboard="custom" aria-live="polite">
+                        <p>Player moves <span data-stat="playerMoves">0</span></p>
+                        <p>Player elapsed <span data-stat="playerTime">—</span></p>
+                        <p>Current Manhattan <span data-stat="currentDistance">1</span></p>
+                        <p>Initial Manhattan <span data-stat="initialDistance">1</span></p>
+                        <p>Distance improvement <span data-stat="improvement">0</span></p>
+                        <p>Optimal solution <span data-stat="solutionMoves">—</span></p>
+                        <p>AI playback <span data-stat="playbackProgress">—</span></p>
+                        <p>AI search time <span data-stat="searchTime">—</span></p>
+                        <p>Playback elapsed <span data-stat="playbackTime">—</span></p>
+                        <p>Expanded nodes <span data-stat="expanded">—</span></p>
+                        <p>Discovered states <span data-stat="discovered">—</span></p>
+                        <p>Peak open list <span data-stat="peakOpen">—</span></p>
+                        <p>Current g(n) <span data-stat="gCost">0</span></p>
+                        <p>Current h(n) <span data-stat="hCost">1</span></p>
+                        <p>Current f(n) <span data-stat="fCost">1</span></p>
+                        <p>Solver status <span data-stat="solverStatus">Ready</span></p>
+                    </div>
+                    <p class="search-explanation">A* evaluates the current path state with f(n) = g(n) + h(n); the frontier expands a state with the lowest estimated total cost.</p>
+                    <div class="search-visualization">
+                        <p>Optimal path states / discovered states <span data-path-summary="custom">—</span></p>
+                        <progress data-path-ratio="custom" max="1" value="0" aria-label="Solution path states relative to discovered states"></progress>
+                    </div>
+
+                </article>
+            </div>
+
+        </section>
+        <section id="how-it-works" class="placeholder-section education-section">
+            <p class="tagline">03 — THE ALGORITHM</p>
+            <h2>How It Works</h2>
+            <div class="education-grid">
+                <article><h3>State-space search</h3><p>Each tile arrangement is a state. Legal blank-tile moves connect states into a graph that the solver explores.</p></article>
+                <article><h3>A* Search</h3><p>A* prioritizes states by <code>f(n) = g(n) + h(n)</code>. The path cost <code>g(n)</code> counts moves already made; the heuristic <code>h(n)</code> estimates moves remaining.</p></article>
+                <article><h3>Manhattan Distance</h3><p>For each numbered tile, add its horizontal and vertical distance to its goal cell. The blank is excluded. This admissible heuristic helps A* find an optimal path.</p></article>
+                <article><h3>Solvability and optimal paths</h3><p>For a 3×3 board, an even inversion count is solvable relative to the standard goal. With unit-cost moves and Manhattan Distance, A* returns a shortest solution.</p></article>
+            </div>
+            <p>Player moves measure your attempt. AI solution moves measure the optimal path found by the algorithm; they are separate metrics.</p>
+        </section>
+
+        <section id="algorithm-comparison" class="placeholder-section">
+            <h2>Algorithm Comparison</h2>
+            <p>Run algorithms against the same current main-puzzle state. Search duration varies by puzzle and device.</p>
+            <button class="secondary-button" data-action="compare" type="button">Compare A*, Greedy, and BFS</button>
+            <p class="comparison-status" role="status" aria-live="polite">No comparison run yet.</p>
+            <div class="comparison-table-wrap">
+                <table>
+                    <thead><tr><th>Algorithm</th><th>Solution moves</th><th>Expanded nodes</th><th>Search time</th><th>Result</th></tr></thead>
+                    <tbody>
+                        <tr data-algorithm="astar"><th>A* + Manhattan</th><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                        <tr data-algorithm="greedy"><th>Greedy Best-First</th><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                        <tr data-algorithm="bfs"><th>Breadth-First Search</th><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>A* with an admissible heuristic and BFS find optimal paths for unit-cost moves. Greedy Best-First Search is not guaranteed to be optimal. BFS may use substantial memory on difficult states.</p>
+        </section>
+
+        <section class="placeholder-section preference-history">
+            <h2>Preferences &amp; Personal Bests</h2>
+            <div class="settings-row">
+                <label for="animation-speed">Playback speed</label>
+                <select id="animation-speed">
+                    <option value="800">Slow</option>
+                    <option value="400" selected>Normal</option>
+                    <option value="180">Fast</option>
+                </select>
+                <label for="accent-choice">Accent</label>
+                <select id="accent-choice"><option value="cyan" selected>Cyan</option><option value="violet">Violet</option><option value="mint">Mint</option></select>
+            </div>
+            <p>Personal best player moves: <strong id="best-player-moves">—</strong></p>
+            <p>Personal best completion time: <strong id="best-player-time">—</strong></p>
+            <button class="secondary-button" data-action="clear-history" type="button">Clear Puzzle History</button>
+            <button class="secondary-button" data-action="reset-records" type="button">Reset Personal Bests</button>
+            <ol id="puzzle-history" aria-label="Recent puzzle history"></ol>
+        </section>
+
+        <section class="placeholder-section" id="features">
+            <h2>Built for exploration</h2>
+            <p>Practice manual play, compare your decisions with an optimal AI path, inspect measured search statistics, and export a solution for later review.</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a href="#home" class="logo">Puzzle<span>AI</span></a>
+        <p>An interactive demonstration of informed state-space search.</p>
+    </footer>
+
+<script src="script.js?v=5"></script>
+</body>
+</html>
